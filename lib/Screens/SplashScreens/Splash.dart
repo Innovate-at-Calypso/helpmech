@@ -12,17 +12,15 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
+
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: AppTheme.lightThemePrimary,
-        ),
-        child: Center(
-          child: Image.asset(
-            AppImages.appLogo,
-            width: double.infinity,
-            height: double.infinity,
-          ),
+      body: Center(
+        child: Image.asset(
+          isDarkMode ? AppImages.DarkLogo : AppImages.LightLogo,
+          width: double.infinity,
+          height: double.infinity,
         ),
       ),
     );

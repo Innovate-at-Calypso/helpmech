@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:helpmech/Routes/app_pages.dart';
 import 'package:helpmech/Routes/routes.dart';
+import 'package:helpmech/Theme/theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,6 +16,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: Routes.splash,
       routes: AppPages.route,
+      theme: ThemeClass.lightTheme,
+      darkTheme: ThemeClass.darkTheme,
+      themeMode: ThemeMode.system,
     );
   }
 }

@@ -1,3 +1,4 @@
 class AppImages {
-  static String appLogo = 'Assets/Images/appLogo.jpg';
+  static String DarkLogo = 'Assets/Images/DarkLogo.jpeg';
+  static String LightLogo = 'Assets/Images/LightLogo.jpeg';
 }
