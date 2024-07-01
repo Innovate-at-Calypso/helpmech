@@ -3,7 +3,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationServices {
-  Future<String?> _determinePosition() async {
+  static Future<String?> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
     Position currentPosition;

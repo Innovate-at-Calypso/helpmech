@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class MenuCell extends StatelessWidget {
@@ -13,39 +12,44 @@ class MenuCell extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.all(25),
+        margin: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Colors.black12,
+              color: Theme.of(context).colorScheme.secondary,
               blurRadius: 4,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Image.asset(
-              mObj["image"].toString(),
-              width: 75,
-              height: 75,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Text(
-                mObj["name"],
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.w700,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                mObj["image"].toString(),
+                width: 100,
+                height: 100,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: Text(
+                  mObj["name"],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

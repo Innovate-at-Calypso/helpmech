@@ -12,11 +12,15 @@ Widget CustomButton(String title, IconData icon, VoidCallback onTap,
         width: screenWidth * 0.90 - 30,
         height: 100,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 129, 129, 129).withOpacity(0.1),
           borderRadius: BorderRadius.circular(30),
-          gradient: const LinearGradient(
-            colors: [Colors.blue, Colors.red, Colors.green],
-          ),
+          color: Theme.of(context).colorScheme.primary,
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).colorScheme.secondary,
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           children: [
