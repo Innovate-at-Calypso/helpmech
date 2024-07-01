@@ -3,7 +3,8 @@ import 'package:helpmech/Routes/app_pages.dart';
 import 'package:helpmech/Routes/routes.dart';
 import 'package:helpmech/Theme/theme.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
