@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:helpmech/Routes/routes.dart';
+import 'package:helpmech/Screens/Mech_Splash/SignIn.dart';
 import 'package:helpmech/Utils/Widget/customButton.dart';
 import 'package:helpmech/Utils/app_images.dart';
 
@@ -46,8 +47,10 @@ class _SelectScreenState extends State<SelectScreen> {
               SizedBox(
                 height: 30,
               ),
-              CustomButton("Login As Mechanic", FontAwesomeIcons.gears, () {},
-                  screenWidth, context),
+              CustomButton("Login As Mechanic", FontAwesomeIcons.gears, () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => MechSignIn()));
+              }, screenWidth, context),
               SizedBox(
                 height: 10,
               ),

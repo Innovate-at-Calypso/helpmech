@@ -3,4 +3,5 @@ class Routes {
   static String selectScreen = '/selectScreen';
   static String homePage = '/homePage';
   static String errorPage = '/errorPage';
+  static String mechHome = '/mechHome';
 }

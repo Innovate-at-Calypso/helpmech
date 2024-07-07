@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:helpmech/Routes/app_pages.dart';
 import 'package:helpmech/Routes/routes.dart';
+import 'package:helpmech/Services/authServices.dart';
 import 'package:helpmech/Theme/theme.dart';
 import 'package:helpmech/Utils/app_images.dart';
 
@@ -13,12 +14,12 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
   @override
+  @override
   void initState() {
-    // TODO: implement initState
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, Routes.selectScreen);
-    });
     super.initState();
+    Future.delayed(Duration(seconds: 3), () async {
+      Authservices.checkUser(context);
+    });
   }
 
   @override

@@ -1,44 +1,28 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:helpmech/Screens/User_Splash/Home/mechanics.dart';
-import 'package:helpmech/Screens/User_Splash/Home/profile_page.dart';
-import 'package:helpmech/Utils/Widget/menu_cell.dart';
-import 'package:helpmech/Utils/Widget/plan_row.dart';
+import 'package:helpmech/Screens/Mech_Splash/Home/register_page.dart';
+import 'package:helpmech/Services/Provider/mech_provider.dart';
+import 'package:helpmech/Services/Provider/shop_provider.dart';
 import 'package:helpmech/Utils/app_images.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class MechHome extends StatefulWidget {
+  const MechHome({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MechHome> createState() => _MechHomeState();
 }
 
-class _HomePageState extends State<HomePage> {
-  List planArr = [];
+class _MechHomeState extends State<MechHome> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
-  List menuData = [
-    {
-      "name": "I Need Petrol",
-      "image": "Assets/Images/petrol.webp",
-      "tag": "1",
-    },
-    {
-      "name": "I Need Mechanic",
-      "image": "Assets/Images/mechanic.jpg",
-      "tag": "2",
-    },
-    {
-      "name": "Settings",
-      "image": "Assets/Images/menu_settings.png",
-      "tag": "3",
-    },
-    {
-      "name": "Support",
-      "image": "Assets/Images/menu_support.png",
-      "tag": "4",
-    },
-  ];
+  String? token;
 
   @override
   Widget build(BuildContext context) {
@@ -66,19 +50,13 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           height: kTextTabBarHeight,
                           child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProfilePage()));
-                            },
+                            onTap: () {},
                             child: Row(
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(22.5),
                                   child: Image.asset(
                                     'Assets/Images/mechanic.jpg', // Adjusted image asset path
-
                                     // user profile here
                                     width: 50,
                                     height: 50,
@@ -88,9 +66,10 @@ class _HomePageState extends State<HomePage> {
                                 SizedBox(width: 20),
                                 Expanded(
                                   child: Text(
-                                    "Gest User",
-
-                                    //user name here
+                                    Provider.of<MechProvider>(context)
+                                        .mechUser
+                                        .userName
+                                        .toUpperCase(),
                                     style: TextStyle(
                                       fontSize: 20,
                                       color: Theme.of(context)
@@ -110,28 +89,7 @@ class _HomePageState extends State<HomePage> {
                           height: 5,
                         ),
                         SizedBox(height: 15),
-                        Expanded(
-                            child: ListView.builder(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 50),
-                                itemCount: planArr.length,
-                                itemBuilder: (context, index) {
-                                  var itemObj = planArr[index] as Map? ?? {};
-
-                                  return PlanRow(
-                                    mObj: itemObj,
-                                    onPressed: () {
-                                      switch (itemObj["tag"].toString()) {
-                                        case "1":
-                                          break;
-                                        case "2":
-                                          break;
-                                        case "3":
-                                          break;
-                                      }
-                                    },
-                                  );
-                                })),
+                        Expanded(child: Text('Hello')),
                         Container(
                           height: kTextTabBarHeight,
                           child: Row(
@@ -225,7 +183,10 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
-                                      "Gest User",
+                                      Provider.of<MechProvider>(context)
+                                          .mechUser
+                                          .userName
+                                          .toUpperCase(),
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w700,
@@ -252,40 +213,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ];
               },
-              body: GridView.builder(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Adjust the crossAxisCount as needed
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                  childAspectRatio: 0.75, // Adjust the aspect ratio as needed
-                ),
-                itemCount: menuData.length,
-                itemBuilder: (context, index) {
-                  var mObj = menuData[index] as Map? ?? {};
-                  return MenuCell(
-                    mObj: mObj,
-                    onPressed: () {
-                      // Handle navigator
-                      switch (mObj["tag"].toString()) {
-                        case "1":
-                          break;
-                        case "2":
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MechanicsSearch()));
-                          break;
-                        case "3":
-                          break;
-                        case "4":
-                          break;
-                      }
-                    },
-                  );
-                },
-              ),
+              body: Provider.of<MechProvider>(context).mechUser.isShop
+                  ? buildRegistedWiget()
+                  : buildRegisterWiget(),
             ),
           ),
           Padding(
@@ -299,6 +229,126 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildRegistedWiget() {
+    var shopDetails =
+        Provider.of<ShopProvider>(context, listen: true).shopModel;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
+      child: Column(
+        children: [
+          Text(
+            'Your Shop Details',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Theme.of(context).colorScheme.secondary, // Border color
+                width: 2.0, // Border width
+              ), // Optional: Rounded corners
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Shop Name :- ${shopDetails.shopName}',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Shop Owner :- ${shopDetails.ownerName}',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'location : - ${shopDetails.location} ${shopDetails.pincode}',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Phone Number :- ${shopDetails.phoneNumber}',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            'Reviews of Your Shop',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Theme.of(context).colorScheme.secondary, // Border color
+                width: 2.0, // Border width
+              ), // Optional: Rounded corners
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [Text('No Reviews')],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildRegisterWiget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
+          child: TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              textStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              shadowColor:
+                  Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+              elevation: 5,
+            ),
+            onPressed: () {
+              // Navigate to the registration screen or perform the registration action
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RegisterPage()));
+            },
+            child: Text(
+              'Register your shop',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
